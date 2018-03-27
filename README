@@ -8,10 +8,11 @@ matplotlib
 
 Using this model requires a good understanding of tensorflow. Example usage with synthetic data is in 'synth_sess.py'.
 
+This repository contains synthetic velocity and eigenvalue data in the corresponding CSV files.
+
 Required input data:
 Thin-section eigenvalues (n_tsx3 matrix)
 Thin-section depth (n_tsx1 matrix, not vector)
-
 Observed p-wave velocities (n_vel x 1 matrix)
 
 The model is fit by first finding a smooth fit to thin section eigenvalues using Gaussian process regression. Then, velocities are modeled to the smooth fit. A smooth estimate of velocity mismatch between measured and modeled (from the thin sections) P-wave data is then found, and used to produce corrected velocities under the assumption that the eigenvalue-derived velocities are unbiased. The remaining mismatch is then regressed out by inverting the velocity model to produce corrected eigenvalues.
