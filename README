@@ -6,12 +6,17 @@ numpy
 scipy
 matplotlib
 
-Example usage with synthetic data is in 'synth_sess.py'. This repository contains synthetic velocity and eigenvalue data in the corresponding CSV files. Example plot output of inferred fabric eigenvalues with depth is given by 'eigenvalues.pdf'.
+
+
+
+ Example plot output of inferred fabric eigenvalues with depth is given by 'eigenvalues.pdf'.
 
 Required input data:
 Thin-section eigenvalues (n_ts x 3 matrix)
 Thin-section depth (n_tsx1 matrix, not vector)
 Observed p-wave velocities (n_vel x 1 matrix) or observed P,Sv,S (n_vel x 3 matrix)
 Velocity depths (n_vel x 1 matrix)
+
+Example usage with synthetic data is in 'synth_sess.py'. This repository contains synthetic velocity and eigenvalue data in the corresponding CSV files. The file 'synth_eig_true.csv' contains "true" synthetic eigenvalues that the model attempts to recover. The file 'synth_eigs_ts.csv' contains the eigenvalues sampled at 100 thin-section depths, but with added noise, to simulate sampling error in real thin sections. The file 'vels.csv' contrains "true" synthetic velocities with depth, generated from the forward velocity model from the "true" eigenvalues. Low spatial-frequency noise is added to this to produce "vels_with_corruption.csv," which is the model input.
 
 The model is fit by first finding a smooth fit to thin section eigenvalues using Gaussian process regression. Then, velocities are modeled to the smooth fit. A smooth estimate of velocity mismatch between measured and modeled (from the thin sections) P-wave data is then found, and used to produce corrected velocities under the assumption that the eigenvalue-derived velocities are unbiased. The remaining mismatch is then regressed out by inverting the velocity model to produce corrected eigenvalues.
