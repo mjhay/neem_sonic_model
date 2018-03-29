@@ -17,12 +17,12 @@ def to_sqvels_nd(vels):
 def to_dimvels(sqvels):
     return np.sqrt(sqvels)/char_time
 
-#create 3000 synthetic sonic velocity depths
+#create ts_interval00 synthetic sonic velocity depths
 ntrain = 3000
-#thin section every 30m.
+#thin section every ts_intervalm.
 ts_interval = 30
 depths_train = np.linspace(0,ntrain,ntrain)[:,np.newaxis]
-depths_ts = depths_train[::30,:]
+depths_ts = depths_train[::ts_interval,:]
 #optimizer to fit velocities to synthetic thin sections.
 ts_optimizer = tf.train.AdagradOptimizer(1e2).minimize(ts_loss)
 
@@ -33,7 +33,7 @@ for i in range(0,1000):
     sess.run(ts_optimizer)
 
 #velocity prediction
-vel_corr_gpr = fit_vels(depths_train[::30,:],to_dimvels(sess.run(sqvels_chris)[::30,:]),to_dimvels(sqvels_train_nd[::30,:]))
+vel_corr_gpr = fit_vels(depths_train[::ts_interval,:],to_dimvels(sess.run(sqvels_chris)[::ts_interval,:]),to_dimvels(sqvels_train_nd[::ts_interval,:]))
 vel_corr = vel_corr_gpr.predict(depths_train)
 #correct velocities
 corrected_sqvels = to_sqvels_nd(vels_train+vel_corr)
